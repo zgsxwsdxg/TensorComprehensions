@@ -95,21 +95,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">Paper</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="report.html">Tech Report</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Support</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="contacts.html">Contacts</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#bugs-and-features">Bugs and features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#mailing-list">Mailing list</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#contributions">Contributions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#slack-channel">Slack channel</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption"><span class="caption-text">Index</span></p>
+              <p class="caption"><span class="caption-text">Index</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">What is Tensor Comprehensions?</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#tensor-comprehension-notation">Tensor Comprehension Notation</a></li>
@@ -224,6 +210,20 @@
 <li class="toctree-l2"><a class="reference internal" href="installation_non_conda.html#step-7-install-tc">Step 7: Install TC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation_non_conda.html#step-8-verify-tc-installation">Step 8: Verify TC installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation_non_conda.html#build-with-basic-caffe2-integration">Build with Basic Caffe2 Integration</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Paper</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="report.html">Tech Report</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contacts.html">Contacts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#bugs-and-features">Bugs and features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#mailing-list">Mailing list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#contributions">Contributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#slack-channel">Slack channel</a></li>
 </ul>
 </li>
 </ul>
@@ -342,7 +342,7 @@ These values can be computed without performing any tensor-wide loops.</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span>v(index_variables) reduction=! rhs_expression
 </pre></div>
 </div>
-<p><code class="code docutils literal"><span class="pre">index_variabes</span></code> must be a list of index variables defined in the <code class="code docutils literal"><span class="pre">rhs_expressions</span></code>
+<p><code class="code docutils literal"><span class="pre">index_variables</span></code> must be a list of index variables defined in the <code class="code docutils literal"><span class="pre">rhs_expressions</span></code>
 <code class="code docutils literal"><span class="pre">reduction</span></code> is optional if all index variables appear on the left hand side.
 The value computed for tensor <code class="code docutils literal"><span class="pre">v</span></code> is equivalent to first assigning all
 elements of <code class="code docutils literal"><span class="pre">v</span></code> to the identity value of <code class="code docutils literal"><span class="pre">reduction</span></code>, then

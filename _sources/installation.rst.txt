@@ -1,6 +1,8 @@
 Installation Guide
 ==================
 
+**Author**: `Priya Goyal <https://github.com/prigoyal>`_
+
 The following instructions are provided for developers who would like to
 experiment with the library.
 
