@@ -325,8 +325,8 @@ notation. For now, it should not try to be a Programming Language.</p>
 <p>As a result of this, everything in TC should be either an input or output. For example:
 consider the TC definition below:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span>def softmax(float(N, D) I) -&gt; (O, expsum) {
-    expsum(n) +=! exp(I(n, d))
-    O(n, d) = exp(I(n, d)) / expsum(n)
+  expsum(n) +=! exp(I(n, d))
+  O(n, d) = exp(I(n, d)) / expsum(n)
 }
 </pre></div>
 </div>
