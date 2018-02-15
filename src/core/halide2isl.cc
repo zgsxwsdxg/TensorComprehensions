@@ -82,7 +82,8 @@ isl::aff makeIslAffFromInt(isl::space space, int64_t val) {
   return isl::aff(isl::local_space(space), v);
 }
 
-isl::aff makeIslAffFromExpr(isl::space space, const Expr& e) {
+isl::pw_aff makeIslAffFromExpr(isl::space space, const Expr& e) {
+  std::cerr << e << "\n";
   if (const Variable* op = e.as<Variable>()) {
     isl::local_space ls = isl::local_space(space);
     int pos = space.find_dim_by_name(isl::dim_type::param, op->name);
@@ -114,6 +115,12 @@ isl::aff makeIslAffFromExpr(isl::space space, const Expr& e) {
       return makeIslAffFromExpr(space, op->a)
           .mod(isl::val(space.get_ctx(), *b));
     }
+  } else if (const Max* op = e.as<Max>()) {
+    return makeIslAffFromExpr(space, op->a)
+      .max(makeIslAffFromExpr(space, op->b));
+  } else if (const Min* op = e.as<Min>()) {
+    return makeIslAffFromExpr(space, op->a)
+      .min(makeIslAffFromExpr(space, op->b));
   } else if (const int64_t* i = as_const_int(e)) {
     return makeIslAffFromInt(space, *i);
   }
@@ -243,13 +250,13 @@ ScheduleTreeAndDomain makeScheduleTreeHelper(
 
     // Construct a variable (affine function) that indexes the new dimension of
     // this space.
-    isl::aff loopVar(
+    isl::pw_aff loopVar(
         isl::local_space(set.get_space()), isl::dim_type::set, thisLoopIdx);
 
     // Then we add our new loop bound constraints.
-    isl::aff lb = halide2isl::makeIslAffFromExpr(set.get_space(), op->min);
+    isl::pw_aff lb = halide2isl::makeIslAffFromExpr(set.get_space(), op->min);
     Expr max = simplify(op->min + op->extent - 1);
-    isl::aff ub = halide2isl::makeIslAffFromExpr(set.get_space(), max);
+    isl::pw_aff ub = halide2isl::makeIslAffFromExpr(set.get_space(), max);
     set = set.intersect(loopVar.ge_set(lb).intersect(ub.ge_set(loopVar)));
 
     // Recursively descend.

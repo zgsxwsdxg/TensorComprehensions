@@ -49,7 +49,7 @@ isl::aff makeIslAffFromInt(isl::space space, int64_t i);
 // Make an affine function over a space from a Halide Expr. Returns a
 // null isl::aff if the expression is not affine. Fails if Variable
 // does not correspond to a parameter or set dimension of the space.
-isl::aff makeIslAffFromExpr(isl::space space, const Halide::Expr& e);
+isl::pw_aff makeIslAffFromExpr(isl::space space, const Halide::Expr& e);
 
 typedef std::unordered_map<isl::id, Halide::Internal::Stmt, isl::IslIdIslHash>
     StatementMap;

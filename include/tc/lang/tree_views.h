@@ -329,8 +329,8 @@ struct Comprehension : public TreeView {
   Ident ident() const {
     return Ident(ident_);
   }
-  ListView<Ident> indices() const {
-    return ListView<Ident>(indices_);
+  ListView<TreeRef> indices() const {
+    return ListView<TreeRef>(indices_);
   }
   // kind == '=', TK_PLUS_EQ, TK_PLUS_EQ_B, etc.
   TreeRef assignment() const {

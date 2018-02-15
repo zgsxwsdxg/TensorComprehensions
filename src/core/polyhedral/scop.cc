@@ -298,7 +298,7 @@ isl::set Scop::makeContextFromInputs(
       auto parametricAff = halide2isl::makeIslAffFromExpr(
           paramSpace, halide.inputs[i].parameter().extent_constraint(j));
       paramSet =
-          paramSet & (isl::aff_set(parametricAff) == inputs[i]->shape[j]);
+          paramSet & (parametricAff.eq_set(isl::pw_aff(paramSet, isl::val(paramSet.get_ctx(), inputs[i]->shape[j]))));
     }
   }
   CHECK(paramSet.is_singleton()) << "could not infer the values of parameters";

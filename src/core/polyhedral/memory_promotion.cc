@@ -428,9 +428,9 @@ isl::set tensorElementsSet(const Scop& scop, isl::id tensorId) {
         space, halideParameter.min_constraint(i));
     auto extentAff = halide2isl::makeIslAffFromExpr(
         space, halideParameter.extent_constraint(i));
-    auto aff = isl::aff(isl::local_space(space), isl::dim_type::set, i);
-    tensorElements = tensorElements & (minAff <= isl::aff_set(aff)) &
-        (isl::aff_set(aff) < (minAff + extentAff));
+    auto aff = isl::pw_aff(isl::local_space(space), isl::dim_type::set, i);
+    tensorElements = tensorElements & (minAff.le_set(aff)) &
+        (aff.lt_set(minAff.add(extentAff)));
   }
 
   if (scop.globalParameterContext) {

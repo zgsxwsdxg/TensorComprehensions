@@ -53,8 +53,27 @@ TEST_F(ATenCompilationUnitTest, DISABLED_Concat) {
 
   Check(
       R"(
-      def concat(float(M, N) A, float(M, N) B) -> (O1, O2) {
+      def concat(float(M, N) A, float(M, N) B) -> (O1) {
         O1(n, i, m) = i == 0 ? A(m, n) : B(m, n) where i in 0:2
+      }
+    )",
+      "concat",
+      tc::MappingOptions::makeNaiveMappingOptions(),
+      inputs,
+      outputs);
+}
+
+TEST_F(ATenCompilationUnitTest, Concat2) {
+  at::Tensor a = at::CUDA(at::kFloat).rand({32, 16});
+  at::Tensor b = at::CUDA(at::kFloat).rand({32, 16});
+  std::vector<at::Tensor> inputs = {a, b};
+  std::vector<at::Tensor> outputs;
+
+  Check(
+      R"(
+      def concat(float(M, N) A, float(M, N) B) -> (O1) {
+        O1(n, 0, m) = A(m, n)
+        O1(n, 1, m) = B(m, n)
       }
     )",
       "concat",

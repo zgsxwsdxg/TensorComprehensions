@@ -359,9 +359,11 @@ struct Sema {
 
     // register index variables (non-reductions)
     for (const auto& index : stmt.indices()) {
-      std::string idx = index.name();
-      auto typ = indexType(index);
-      insert(index_env, index, typ, true);
+      if (index->kind() == TK_IDENT) {
+        std::string idx = Ident(index).name();
+        auto typ = indexType(index);
+        insert(index_env, Ident(index), typ, true);
+      }
     }
 
     // make dimension variables for each dimension of the output tensor

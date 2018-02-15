@@ -638,7 +638,7 @@ isl::map findScheduleByStmtId(isl::union_map schedule, isl::id stmtId) {
   return isl::map();
 }
 
-isl::multi_aff makeMultiAffAccess(
+isl::multi_pw_aff makeMultiAffAccess(
     isl::id tensorId,
     const std::vector<Halide::Expr>& subscripts,
     const CodegenStatementContext& context) {
@@ -650,10 +650,9 @@ isl::multi_aff makeMultiAffAccess(
   tensorSpace = tensorSpace.set_tuple_id(isl::dim_type::set, tensorId);
   auto space = domainSpace.map_from_domain_and_range(tensorSpace);
 
-  auto ma = isl::multi_aff::zero(space);
+  auto ma = isl::multi_pw_aff::zero(space);
   for (size_t i = 0; i < subscripts.size(); ++i) {
-    ma = ma.set_aff(
-        i, halide2isl::makeIslAffFromExpr(domainSpace, subscripts[i]));
+    ma = ma.set_pw_aff(i, halide2isl::makeIslAffFromExpr(domainSpace, subscripts[i]));
   }
   return ma;
 }

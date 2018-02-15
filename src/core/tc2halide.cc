@@ -192,7 +192,7 @@ Expr translateExpr(
   }
 }
 
-vector<const Variable*> unboundVariables(const vector<Var>& lhs, Expr rhs) {
+vector<const Variable*> unboundVariables(const vector<Expr>& lhs, Expr rhs) {
   class FindUnboundVariables : public IRVisitor {
     using IRVisitor::visit;
 
@@ -217,9 +217,11 @@ vector<const Variable*> unboundVariables(const vector<Var>& lhs, Expr rhs) {
     set<string> visited;
 
    public:
-    FindUnboundVariables(const vector<Var>& lhs) {
-      for (auto v : lhs) {
-        bound.push(v.name());
+    FindUnboundVariables(const vector<Expr>& lhs) {
+      for (auto e : lhs) {
+        if (const Variable *v = e.as<Variable>()) {
+          bound.push(v->name);
+        }
       }
     }
     vector<const Variable*> result;
@@ -487,11 +489,18 @@ void translateComprehension(
   // convenient to use both.
   Func func(f);
 
-  vector<Var> lhs;
-  vector<Expr> lhs_as_exprs;
-  for (lang::Ident id : c.indices()) {
-    lhs.push_back(Var(id.name()));
-    lhs_as_exprs.push_back(lhs.back());
+  vector<Expr> lhs;
+  vector<Var> lhs_vars;
+  bool total_definition = true;
+  for (lang::TreeRef idx : c.indices()) {
+    Expr e = translateExpr(idx, params, *funcs);
+    if (const Variable *op = e.as<Variable>()) {
+      lhs_vars.push_back(Var(op->name));
+    } else {
+      total_definition = false;
+      lhs_vars.push_back(Var());
+    }
+    lhs.push_back(e);
   }
 
   Expr rhs = translateExpr(c.rhs(), params, *funcs);
@@ -502,7 +511,7 @@ void translateComprehension(
   auto setupIdentity = [&](const Expr& identity, bool zero) {
     if (!f.has_pure_definition()) {
       added_implicit_initialization = true;
-      func(lhs) = (zero) ? identity
+      func(lhs_vars) = (zero) ? identity
                          : undef(rhs.type()); // undef causes the original value
                                               // to remain in input arrays
     }
@@ -543,6 +552,9 @@ void translateComprehension(
       break;
 
     case '=':
+      if (!total_definition) {
+        setupIdentity(rhs, false);
+      }
       break;
     default:
       throw lang::ErrorReport(c) << "Unimplemented reduction "
@@ -605,23 +617,30 @@ void translateComprehension(
   // Infer the rest
   forwardBoundsInference(rhs, *bounds, c, throwWarnings, &solution);
 
-  // TODO: What if subsequent updates have incompatible bounds
-  // (e.g. an in-place stencil)?. The .bound directive will use the
-  // bounds of the last stage for all stages.
-
-  // Does a tensor have a single bound, or can its bounds shrink over
-  // time? Solve for a single bound for now.
-
-  for (Var v : lhs) {
-    if (!solution.contains(v.name())) {
-      throw lang::ErrorReport(c)
+  // Set the bounds to be the union of the boxes written to by every
+  // comprehension touching the tensor.
+  for (int i = 0; i < f.dimensions(); i++) {
+    Expr e = lhs[i];
+    if (const Variable *v = e.as<Variable>()) {
+      if (!solution.contains(v->name)) {
+        throw lang::ErrorReport(c)
           << "Free variable " << v
           << " was not solved in range inference. May not be used right-hand side";
+      }
     }
-    // TODO: We're enforcing a single bound across all comprehensions
-    // for now. We should really check later ones are equal to earlier
-    // ones instead of just clobbering.
-    (*bounds)[f][v.name()] = solution.get(v.name());
+
+    Interval in = bounds_of_expr_in_scope(e, solution);
+    map<string, Interval> &b = (*bounds)[f];
+    string dim_name = f.args()[i];
+    auto old = b.find(dim_name);
+    if (old != b.end()) {
+      // Take the union with any existing bounds
+      in.include(old->second);
+    } else {
+      // We always include zero
+      in.include(0);
+    }
+    b[dim_name] = in;
   }
 
   // Free variables that appear on the rhs but not the lhs are
@@ -667,9 +686,12 @@ void translateComprehension(
     }
   }
   while (!lhs.empty()) {
-    loop_nest.push_back(lhs.back());
+    if (const Variable *v = lhs.back().as<Variable>()) {
+      loop_nest.push_back(Var(v->name));
+    }
     lhs.pop_back();
   }
+  stage.reorder(loop_nest);
 
   if (added_implicit_initialization) {
     // Also reorder reduction initializations to the TC convention
@@ -683,7 +705,6 @@ void translateComprehension(
   }
 
   func.compute_root();
-  stage.reorder(loop_nest);
 }
 
 HalideComponents translateDef(const lang::Def& def, bool throwWarnings) {
