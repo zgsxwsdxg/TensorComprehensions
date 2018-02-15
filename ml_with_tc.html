@@ -322,6 +322,18 @@ for the same reason stated above. As a consequence there is never a notion of TC
 scope in a TC, allocations etc (i.e. all the basic stuff you expect from a
 Programming Language). As a consequence TC is not a Programming Language but a concise
 notation. For now, it should not try to be a Programming Language.</p>
+<p>As a result of this, everything in TC should be either an input or output. For example:
+consider the TC definition below:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>def softmax(float(N, D) I) -&gt; (O, expsum) {
+    expsum(n) +=! exp(I(n, d))
+    O(n, d) = exp(I(n, d)) / expsum(n)
+}
+</pre></div>
+</div>
+<p>In this TC, <code class="code docutils literal"><span class="pre">expsum</span></code> is a temporary variable that needs to be computed but
+since TC doesn&#8217;t do allocations itself, we set it as another output. User can chose
+to ignore this output. We will work on enhancing this and deal with temporary
+allocations better in future.</p>
 </div>
 <div class="section" id="graph-level">
 <h3>Graph Level<a class="headerlink" href="#graph-level" title="Permalink to this headline">¶</a></h3>
