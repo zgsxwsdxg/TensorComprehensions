@@ -39,7 +39,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Tensor Comprehensions v0.1.0 documentation" href="index.html"/>
         <link rel="next" title="Building from Source in Conda Environment" href="installation_conda.html"/>
-        <link rel="prev" title="Installing TC from docker image" href="docker_image.html"/> 
+        <link rel="prev" title="Installing TC from Docker image" href="installation_docker_image.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -95,21 +95,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">Paper</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="report.html">Tech Report</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Support</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="contacts.html">Contacts</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#bugs-and-features">Bugs and features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#mailing-list">Mailing list</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#contributions">Contributions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#slack-channel">Slack channel</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption"><span class="caption-text">Index</span></p>
+              <p class="caption"><span class="caption-text">Index</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">What is Tensor Comprehensions?</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#tensor-comprehension-notation">Tensor Comprehension Notation</a></li>
@@ -127,7 +113,7 @@
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#types">Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#data-layout">Data Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#variable-scoping">Variable Scoping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semantics.html#implied-reductions">Implied Reductions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="semantics.html#implied-reductions-and-operators">Implied Reductions and operators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#size-expressions">Size Expressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#statements">Statements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#expressions">Expressions</a></li>
@@ -188,8 +174,8 @@
 <p class="caption"><span class="caption-text">Installation</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docker_image.html">Installing TC from docker image</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="docker_image.html#tc-runtime-image-with-nvidia-docker">TC runtime image with nvidia-docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation_docker_image.html">Installing TC from Docker image</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation_docker_image.html#tc-runtime-image-with-nvidia-docker">TC runtime image with nvidia-docker</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Building with conda packaged dependencies in Conda Environment</a><ul>
@@ -224,6 +210,20 @@
 <li class="toctree-l2"><a class="reference internal" href="installation_non_conda.html#step-7-install-tc">Step 7: Install TC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation_non_conda.html#step-8-verify-tc-installation">Step 8: Verify TC installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation_non_conda.html#build-with-basic-caffe2-integration">Build with Basic Caffe2 Integration</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Paper</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="report.html">Tech Report</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contacts.html">Contacts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#bugs-and-features">Bugs and features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#mailing-list">Mailing list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#contributions">Contributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#slack-channel">Slack channel</a></li>
 </ul>
 </li>
 </ul>
@@ -397,7 +397,7 @@ $ <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</
 </div>
 </div>
 <div class="section" id="step-6-install-tc">
-<h2>Step 6: Install TC<a class="headerlink" href="#step-6-install-tc" title="Permalink to this headline">¶</a></h2>
+<span id="conda-dep-install-tc"></span><h2>Step 6: Install TC<a class="headerlink" href="#step-6-install-tc" title="Permalink to this headline">¶</a></h2>
 <p>We ship conda packages for most of TC dependencies like <code class="code docutils literal"><span class="pre">clang+llvm</span></code>, <code class="code docutils literal"><span class="pre">glog</span></code>,
 <code class="code docutils literal"><span class="pre">gflags</span></code>, <code class="code docutils literal"><span class="pre">protobuf3</span></code>, <code class="code docutils literal"><span class="pre">halide</span></code>. We will directly install the
 conda packages of TC dependencies and then build TC.</p>
@@ -439,7 +439,7 @@ $ ./test_cpu.sh               <span class="c1"># if you have only CPU</span>
         <a href="installation_conda.html" class="btn btn-neutral float-right" title="Building from Source in Conda Environment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="docker_image.html" class="btn btn-neutral" title="Installing TC from docker image" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="installation_docker_image.html" class="btn btn-neutral" title="Installing TC from Docker image" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

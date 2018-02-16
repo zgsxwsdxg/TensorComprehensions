@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installing TC from docker image &mdash; Tensor Comprehensions v0.1.0 documentation</title>
+  <title>Installing TC from Docker image &mdash; Tensor Comprehensions v0.1.0 documentation</title>
   
 
   
@@ -174,7 +174,7 @@
 <p class="caption"><span class="caption-text">Installation</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing TC from docker image</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing TC from Docker image</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#tc-runtime-image-with-nvidia-docker">TC runtime image with nvidia-docker</a></li>
 </ul>
 </li>
@@ -270,7 +270,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Installing TC from docker image</li>
+      <li>Installing TC from Docker image</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -290,7 +290,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="installing-tc-from-docker-image">
-<h1>Installing TC from docker image<a class="headerlink" href="#installing-tc-from-docker-image" title="Permalink to this headline">¶</a></h1>
+<h1>Installing TC from Docker image<a class="headerlink" href="#installing-tc-from-docker-image" title="Permalink to this headline">¶</a></h1>
 <p>We provide docker runtime images for <code class="code docutils literal"><span class="pre">conda</span></code> and <code class="code docutils literal"><span class="pre">non-conda</span></code> environments both. TC officially supports
 running gcc 4.*, CUDA 8, CUDNN 6 and ubuntu14.04 and gcc 5.*, CUDA9, CUDNN6 on ubuntu16.04. You can find all available images
 for Tensor Comprehensions at the <a class="reference external" href="https://hub.docker.com/u/tensorcomprehensions/">dockerhub</a></p>
@@ -306,34 +306,33 @@ If your memory is not enough, TC will not build and you will see the errors like
 <li><code class="code docutils literal"><span class="pre">Ubuntu</span> <span class="pre">14.04</span> <span class="pre">conda</span> <span class="pre">environment</span></code></li>
 </ul>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ docker run -i -t tensorcomprehensions/linux-trusty-gcc4.8-tapir5.0-cuda8-cudnn6-py3-conda:x86
-$ <span class="nb">cd</span> <span class="nv">$HOME</span> <span class="o">&amp;&amp;</span> git clone https://github.com/facebookresearch/TensorComprehensions.git --recursive
-$ <span class="nb">cd</span> TensorComprehensions/
-$ conda create -y --name tc-build-conda <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6
-$ <span class="nb">source</span> activate tc-build-conda
-$ conda install -y -c prigoyal tapir50 llvm isl-tc gflags glog
-$ conda install -y -c pytorch pytorch
-$ git submodule update --init --recursive
-$ <span class="nv">BUILD_TYPE</span><span class="o">=</span>Release <span class="nv">INSTALL_PREFIX</span><span class="o">=</span><span class="nv">$CONDA_PREFIX</span> <span class="nv">WITH_CAFFE2</span><span class="o">=</span>OFF <span class="nv">CLANG_PREFIX</span><span class="o">=</span><span class="k">$(</span>llvm-config --prefix<span class="k">)</span> ./build.sh --all
 </pre></div>
 </div>
+<p>Now, follow the instructions below to build TC:</p>
 <ul class="simple">
+<li><strong>Option1:</strong> If you want to build everything from scratch including TC dependencies, follow <a class="reference internal" href="installation_conda_dep.html#conda-dep-install-tc"><span class="std std-ref">Step 6: Install TC</span></a>.</li>
+<li><strong>Option2:</strong> If you want to build TC but using pre-built conda packages, follow <a class="reference internal" href="installation_conda.html#conda-install-tc"><span class="std std-ref">Step 7: Installing TC</span></a>.</li>
 <li><code class="code docutils literal"><span class="pre">Ubuntu</span> <span class="pre">14.04</span> <span class="pre">non-conda</span> <span class="pre">environment</span></code></li>
 </ul>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ docker run -i -t tensorcomprehensions/linux-trusty-gcc4.8-tapir5.0-cuda8-cudnn6-py3:x86
 </pre></div>
 </div>
+<p>Now, to install TC, follow <a class="reference internal" href="installation_non_conda.html#non-conda-install-tc"><span class="std std-ref">Step 7: Install TC</span></a></p>
 <ul class="simple">
 <li><code class="code docutils literal"><span class="pre">Ubuntu</span> <span class="pre">16.04</span> <span class="pre">conda</span> <span class="pre">environment</span></code></li>
 </ul>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ docker run -i -t tensorcomprehensions/linux-xenial-gcc5-tapir5.0-cuda9-cudnn7-py3-conda:x86
 </pre></div>
 </div>
+<p>We don&#8217;t ship the conda packages for TC dependencies that are compatible with gcc5 yet, so you have to
+build them from source. To install TC, see instructions here: <a class="reference internal" href="installation_conda.html#conda-install-tc"><span class="std std-ref">Step 7: Installing TC</span></a></p>
 <ul class="simple">
 <li><code class="code docutils literal"><span class="pre">Ubuntu</span> <span class="pre">16.04</span> <span class="pre">non-conda</span> <span class="pre">environment</span></code></li>
 </ul>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ docker run -i -t tensorcomprehensions/linux-xenial-gcc5-tapir5.0-cuda9-cudnn7-py3:x86
 </pre></div>
 </div>
+<p>Now, to install TC, follow <a class="reference internal" href="installation_non_conda.html#non-conda-install-tc"><span class="std std-ref">Step 7: Install TC</span></a></p>
 <div class="section" id="tc-runtime-image-with-nvidia-docker">
 <h2>TC runtime image with nvidia-docker<a class="headerlink" href="#tc-runtime-image-with-nvidia-docker" title="Permalink to this headline">¶</a></h2>
 <p>We also provide a runtime nvidia-docker image for <code class="code docutils literal"><span class="pre">Ubuntu</span> <span class="pre">14.04</span></code>, <code class="code docutils literal"><span class="pre">gcc</span> <span class="pre">4.8</span></code>, <code class="code docutils literal"><span class="pre">CUDA</span> <span class="pre">8</span></code> and <code class="code docutils literal"><span class="pre">CUDNN</span> <span class="pre">6</span></code>.
@@ -345,6 +344,11 @@ have <code class="code docutils literal"><span class="pre">nvidia-docker</span><
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ nvidia-docker run --rm -i -t tensorcomprehensions/trusty-gcc4.8-py3-conda-cuda:x86
 </pre></div>
 </div>
+<p>Now, follow the instructions below to build TC:</p>
+<ul class="simple">
+<li><strong>Option1:</strong> If you want to build everything from scratch including TC dependencies, follow <a class="reference internal" href="installation_conda_dep.html#conda-dep-install-tc"><span class="std std-ref">Step 6: Install TC</span></a>.</li>
+<li><strong>Option2:</strong> If you want to build TC but using pre-built conda packages, follow <a class="reference internal" href="installation_conda.html#conda-install-tc"><span class="std std-ref">Step 7: Installing TC</span></a>.</li>
+</ul>
 </div>
 </div>
 

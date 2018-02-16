@@ -95,21 +95,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">Paper</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="report.html">Tech Report</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Support</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="contacts.html">Contacts</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#bugs-and-features">Bugs and features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#mailing-list">Mailing list</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#contributions">Contributions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#slack-channel">Slack channel</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption"><span class="caption-text">Index</span></p>
+              <p class="caption"><span class="caption-text">Index</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">What is Tensor Comprehensions?</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#tensor-comprehension-notation">Tensor Comprehension Notation</a></li>
@@ -127,7 +113,7 @@
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#types">Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#data-layout">Data Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#variable-scoping">Variable Scoping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semantics.html#implied-reductions">Implied Reductions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="semantics.html#implied-reductions-and-operators">Implied Reductions and operators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#size-expressions">Size Expressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#statements">Statements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#expressions">Expressions</a></li>
@@ -188,8 +174,8 @@
 <p class="caption"><span class="caption-text">Installation</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docker_image.html">Installing TC from docker image</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="docker_image.html#tc-runtime-image-with-nvidia-docker">TC runtime image with nvidia-docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation_docker_image.html">Installing TC from Docker image</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation_docker_image.html#tc-runtime-image-with-nvidia-docker">TC runtime image with nvidia-docker</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation_conda_dep.html">Building with conda packaged dependencies in Conda Environment</a><ul>
@@ -224,6 +210,20 @@
 <li class="toctree-l2"><a class="reference internal" href="installation_non_conda.html#step-7-install-tc">Step 7: Install TC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation_non_conda.html#step-8-verify-tc-installation">Step 8: Verify TC installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation_non_conda.html#build-with-basic-caffe2-integration">Build with Basic Caffe2 Integration</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Paper</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="report.html">Tech Report</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contacts.html">Contacts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#bugs-and-features">Bugs and features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#mailing-list">Mailing list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#contributions">Contributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#slack-channel">Slack channel</a></li>
 </ul>
 </li>
 </ul>
@@ -428,7 +428,7 @@ $ <span class="nb">cd</span> protobuf-3.4.0 <span class="o">&amp;&amp;</span> ./
 </div>
 </div>
 <div class="section" id="step-7-installing-tc">
-<h2>Step 7: Installing TC<a class="headerlink" href="#step-7-installing-tc" title="Permalink to this headline">¶</a></h2>
+<span id="conda-install-tc"></span><h2>Step 7: Installing TC<a class="headerlink" href="#step-7-installing-tc" title="Permalink to this headline">¶</a></h2>
 <p>Now, you need to install TC from source. For installing TC from source, checkout the TensorComprehensions repo and run the following commands:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> <span class="nv">$HOME</span> <span class="o">&amp;&amp;</span> git clone git@github.com:facebookresearch/TensorComprehensions.git --recursive
 $ <span class="nb">cd</span> TensorComprehensions
