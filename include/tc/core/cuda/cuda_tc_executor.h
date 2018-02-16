@@ -18,6 +18,7 @@
 #include "tc/core/halide2pencil.h"
 #include "tc/core/mapping_options.h"
 #include "tc/core/polyhedral/scop.h"
+#include "tc/core/tc_executor.h"
 #include "tc/core/utils/dlpack.h"
 #include "tc/lang/parser.h"
 
@@ -30,7 +31,7 @@ using PpcgppCompilationCommand = std::function<std::string(
     const std::vector<const DLTensor*>& inputs,
     const MappingOptions& options)>;
 
-class CudaTcExecutor {
+class CudaTcExecutor : public ::tc::TcExecutor {
  public:
   CudaTcExecutor(
       const std::string& TCDefinition,
@@ -45,13 +46,6 @@ class CudaTcExecutor {
   CudaTcExecutor(const CudaTcExecutor&) = delete;
   CudaTcExecutor& operator=(const CudaTcExecutor&) = delete;
 
-  // Given a Tc and a list of input tensors that match the definition in the
-  // Tc in positional order, this generates the output tensor infos issued
-  // from forward inference.
-  // The typical flow is to infer output sizes, allocate/resize them within
-  // you favorite ML framework / tensor library and then call compile.
-  std::vector<const DLTensor*> inferOutputTensorInfo();
-
   // Can only be called once with specific kernel options.  Input sizes are
   // set up as constructor argument and output sizes are inferred.
   //
@@ -59,7 +53,12 @@ class CudaTcExecutor {
   // options then just instantiate another CudaTcExecutor.
   // This is because for the time being we fully specialize all the sizes and
   // strides at runtime.
+  // @{
+  void compile(const std::string& options) override {
+    compile(MappingOptions(options));
+  }
   void compile(const tc::MappingOptions& options);
+  // @}
 
   // Run can be called multiple times given a compilation, inputs are allowed
   // to change in that their data pointer is allowed to change.
@@ -105,24 +104,8 @@ class CudaTcExecutor {
   }
 
  private:
-  HalidePencilState getHalidePencilState(
-      const std::vector<const DLTensor*>& inTensorPtrs);
-
   void compileWithPetPpcg();
   void compileWithTcMapper();
-
-  struct TcExecutionInfo {
-    std::string kernelName;
-    std::vector<dlutils::DLTensorUPtr> inputsInfo;
-    std::vector<dlutils::DLTensorUPtr> outputsInfo;
-    std::vector<int> kernelParams;
-    std::string kernelSpecializedName;
-    std::unique_ptr<tc::MappingOptions> options;
-    std::string cudaSource;
-    Grid grid{{0, 0, 0}};
-    Block block{{0, 0, 0}};
-    std::shared_ptr<CudaRTCFunction> rtcFun;
-  };
 
  public:
   Grid grid() const {
@@ -131,16 +114,6 @@ class CudaTcExecutor {
   Block block() const {
     return execInfo_.block;
   }
-
-  const static size_t InvalidHandle = std::numeric_limits<size_t>::max();
-
- private:
-  void checkInputsCompliant(
-      const std::vector<const DLTensor*>& inputsInfo) const;
-  tc2halide::HalideComponents halideComponents_;
-  TcExecutionInfo execInfo_;
-  lang::TreeRef tcTree_;
-  mutable isl::ctx ctx_;
 };
 
 } // namespace tc
