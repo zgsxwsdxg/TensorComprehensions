@@ -39,7 +39,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Tensor Comprehensions v0.1.0 documentation" href="index.html"/>
         <link rel="next" title="Examples of TC integration" href="aten_integration.html"/>
-        <link rel="prev" title="Contacts" href="contacts.html"/> 
+        <link rel="prev" title="Tensor Comprehensions documentation" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -95,21 +95,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">Paper</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="report.html">Tech Report</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Support</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="contacts.html">Contacts</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#bugs-and-features">Bugs and features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#mailing-list">Mailing list</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#contributions">Contributions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#slack-channel">Slack channel</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption"><span class="caption-text">Index</span></p>
+              <p class="caption"><span class="caption-text">Index</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">What is Tensor Comprehensions?</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#tensor-comprehension-notation">Tensor Comprehension Notation</a></li>
@@ -127,7 +113,10 @@
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#types">Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#data-layout">Data Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#variable-scoping">Variable Scoping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semantics.html#implied-reductions">Implied Reductions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="semantics.html#implied-reductions">Implied Reductions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semantics.html#reduction-operators">Reduction Operators</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#size-expressions">Size Expressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#statements">Statements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#expressions">Expressions</a></li>
@@ -227,6 +216,20 @@
 </ul>
 </li>
 </ul>
+<p class="caption"><span class="caption-text">Paper</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="report.html">Tech Report</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contacts.html">Contacts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#bugs-and-features">Bugs and features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#mailing-list">Mailing list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#contributions">Contributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#slack-channel">Slack channel</a></li>
+</ul>
+</li>
+</ul>
 
             
           
@@ -308,14 +311,14 @@ with a few basic functionalities.</p>
 <li>the evaluation order of points in the iteration space does not affect the output.</li>
 </ol>
 <p>Let&#8217;s start with a simple example is a matrix vector product:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mv</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">C</span><span class="p">)</span> <span class="n">A</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">C</span><span class="p">)</span> <span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">o</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+=</span> <span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="n">b</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mv</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">C</span><span class="p">)</span> <span class="n">A</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">C</span><span class="p">)</span> <span class="n">B</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">o</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+=</span> <span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="n">B</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><code class="code docutils literal"><span class="pre">A</span></code> and <code class="code docutils literal"><span class="pre">x</span></code> are input tensors. <code class="code docutils literal"><span class="pre">o</span></code> is an output tensor.
-The statement <code class="code docutils literal"><span class="pre">o(i)</span> <span class="pre">+=</span> <span class="pre">A(i,j)*b(j)</span></code> introduces two index variables <code class="code docutils literal"><span class="pre">i</span></code> and <code class="code docutils literal"><span class="pre">j</span></code>.
-Their range is inferred by their use indexing <code class="code docutils literal"><span class="pre">A</span></code> and <code class="code docutils literal"><span class="pre">b</span></code>. <code class="code docutils literal"><span class="pre">i</span> <span class="pre">=</span> <span class="pre">[0,R)</span></code>, <code class="code docutils literal"><span class="pre">j</span> <span class="pre">=</span> <span class="pre">[0,C)</span></code>.
+<p><code class="code docutils literal"><span class="pre">A</span></code> and <code class="code docutils literal"><span class="pre">B</span></code> are input tensors. <code class="code docutils literal"><span class="pre">o</span></code> is an output tensor.
+The statement <code class="code docutils literal"><span class="pre">o(i)</span> <span class="pre">+=</span> <span class="pre">A(i,j)</span> <span class="pre">*</span> <span class="pre">B(j)</span></code> introduces two index variables <code class="code docutils literal"><span class="pre">i</span></code> and <code class="code docutils literal"><span class="pre">j</span></code>.
+Their range is inferred by their use indexing <code class="code docutils literal"><span class="pre">A</span></code> and <code class="code docutils literal"><span class="pre">B</span></code>. <code class="code docutils literal"><span class="pre">i</span> <span class="pre">=</span> <span class="pre">[0,R)</span></code>, <code class="code docutils literal"><span class="pre">j</span> <span class="pre">=</span> <span class="pre">[0,C)</span></code>.
 Because <code class="code docutils literal"><span class="pre">j</span></code> only appears on the right side,
 stores into <code class="code docutils literal"><span class="pre">o</span></code> will reduce over <code class="code docutils literal"><span class="pre">j</span></code> with the reduction specified for the loop.
 Reductions can occur across multiple variables, but they all share the same kind of associative reduction (e.g. <code class="code docutils literal"><span class="pre">+=</span></code>)
@@ -323,7 +326,7 @@ to maintain invariant (3). <code class="code docutils literal"><span class="pre"
 <div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">R</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
   <span class="n">o</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">;</span>
   <span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">C</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">o</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+=</span> <span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="n">b</span><span class="p">(</span><span class="n">j</span><span class="p">);</span>
+    <span class="n">o</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+=</span> <span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="n">B</span><span class="p">(</span><span class="n">j</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -335,8 +338,8 @@ to maintain invariant (3). <code class="code docutils literal"><span class="pre"
 <p>We provide a few basic examples.</p>
 <div class="section" id="simple-matrix-vector">
 <h3>Simple matrix-vector<a class="headerlink" href="#simple-matrix-vector" title="Permalink to this headline">¶</a></h3>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mv</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">C</span><span class="p">)</span> <span class="n">A</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">C</span><span class="p">)</span> <span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">o</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+=</span> <span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="n">b</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mv</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">C</span><span class="p">)</span> <span class="n">A</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">C</span><span class="p">)</span> <span class="n">B</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">o</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+=</span> <span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="n">B</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -345,7 +348,7 @@ to maintain invariant (3). <code class="code docutils literal"><span class="pre"
 <h3>Simple matrix-multiply<a class="headerlink" href="#simple-matrix-multiply" title="Permalink to this headline">¶</a></h3>
 <p>Note the layout for B is transposed and matches the traditional layout of the weight matrix in a linear layer):</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mm</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span> <span class="n">A</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">Z</span><span class="p">)</span> <span class="n">B</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">R</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="o">+=</span> <span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="n">B</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span>
+  <span class="n">R</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="o">+=</span> <span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">B</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -385,7 +388,7 @@ to maintain invariant (3). <code class="code docutils literal"><span class="pre"
         <a href="aten_integration.html" class="btn btn-neutral float-right" title="Examples of TC integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="contacts.html" class="btn btn-neutral" title="Contacts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="Tensor Comprehensions documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
