@@ -32,8 +32,8 @@ Each index variable has an associated range :code:`[b,e)` over which it operates
 That range is inferred by its use, as described below.
 Index variables go out of scope after the statement, allowing the reuse of short variable names like :code:`i`.
 
-Implied Reductions and Reduction operators
-------------------------------------------
+Implied Reductions and operators
+--------------------------------
 
 If an index variable appears on the right but not on the left of a statement,
 it is a reduction index for the statement.
