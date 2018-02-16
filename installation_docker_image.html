@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
@@ -9,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; Tensor Comprehensions v0.1.0 documentation</title>
+  <title>Installing TC from docker image &mdash; Tensor Comprehensions v0.1.0 documentation</title>
   
 
   
@@ -36,9 +35,11 @@
 
   
         <link rel="index" title="Index"
-              href="#"/>
+              href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Tensor Comprehensions v0.1.0 documentation" href="index.html"/> 
+    <link rel="top" title="Tensor Comprehensions v0.1.0 documentation" href="index.html"/>
+        <link rel="next" title="Building with conda packaged dependencies in Conda Environment" href="installation_conda_dep.html"/>
+        <link rel="prev" title="Installation Guide" href="installation.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -171,10 +172,10 @@
 </li>
 </ul>
 <p class="caption"><span class="caption-text">Installation</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation_docker_image.html">Installing TC from docker image</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation_docker_image.html#tc-runtime-image-with-nvidia-docker">TC runtime image with nvidia-docker</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing TC from docker image</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tc-runtime-image-with-nvidia-docker">TC runtime image with nvidia-docker</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation_conda_dep.html">Building with conda packaged dependencies in Conda Environment</a><ul>
@@ -269,12 +270,14 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Index</li>
+      <li>Installing TC from docker image</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
+            <a href="_sources/installation_docker_image.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -286,11 +289,63 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-
-<h1 id="index">Index</h1>
-
-<div class="genindex-jumpbox">
- 
+  <div class="section" id="installing-tc-from-docker-image">
+<h1>Installing TC from docker image<a class="headerlink" href="#installing-tc-from-docker-image" title="Permalink to this headline">¶</a></h1>
+<p>We provide docker runtime images for <code class="code docutils literal"><span class="pre">conda</span></code> and <code class="code docutils literal"><span class="pre">non-conda</span></code> environments both. TC officially supports
+running gcc 4.*, CUDA 8, CUDNN 6 and ubuntu14.04 and gcc 5.*, CUDA9, CUDNN6 on ubuntu16.04. You can find all available images
+for Tensor Comprehensions at the <a class="reference external" href="https://hub.docker.com/u/tensorcomprehensions/">dockerhub</a></p>
+<p>The conda and non-conda images for each setup are below:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Docker images below require 12Gb to 16Gb of RAM to run. If you need to adjust the
+memory requirements, then please add <code class="code docutils literal"><span class="pre">--memory=16g</span></code> to the docker run command.
+If your memory is not enough, TC will not build and you will see the errors like
+<cite>g++: internal compiler error: Killed (program cc1plus)</cite></p>
+</div>
+<ul class="simple">
+<li><code class="code docutils literal"><span class="pre">Ubuntu</span> <span class="pre">14.04</span> <span class="pre">conda</span> <span class="pre">environment</span></code></li>
+</ul>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ docker run -i -t tensorcomprehensions/linux-trusty-gcc4.8-tapir5.0-cuda8-cudnn6-py3-conda:x86
+$ <span class="nb">cd</span> <span class="nv">$HOME</span> <span class="o">&amp;&amp;</span> git clone https://github.com/facebookresearch/TensorComprehensions.git --recursive
+$ <span class="nb">cd</span> TensorComprehensions/
+$ conda create -y --name tc-build-conda <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6
+$ <span class="nb">source</span> activate tc-build-conda
+$ conda install -y -c prigoyal tapir50 llvm isl-tc gflags glog
+$ conda install -y -c pytorch pytorch
+$ git submodule update --init --recursive
+$ <span class="nv">BUILD_TYPE</span><span class="o">=</span>Release <span class="nv">INSTALL_PREFIX</span><span class="o">=</span><span class="nv">$CONDA_PREFIX</span> <span class="nv">WITH_CAFFE2</span><span class="o">=</span>OFF <span class="nv">CLANG_PREFIX</span><span class="o">=</span><span class="k">$(</span>llvm-config --prefix<span class="k">)</span> ./build.sh --all
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="code docutils literal"><span class="pre">Ubuntu</span> <span class="pre">14.04</span> <span class="pre">non-conda</span> <span class="pre">environment</span></code></li>
+</ul>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ docker run -i -t tensorcomprehensions/linux-trusty-gcc4.8-tapir5.0-cuda8-cudnn6-py3:x86
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="code docutils literal"><span class="pre">Ubuntu</span> <span class="pre">16.04</span> <span class="pre">conda</span> <span class="pre">environment</span></code></li>
+</ul>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ docker run -i -t tensorcomprehensions/linux-xenial-gcc5-tapir5.0-cuda9-cudnn7-py3-conda:x86
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="code docutils literal"><span class="pre">Ubuntu</span> <span class="pre">16.04</span> <span class="pre">non-conda</span> <span class="pre">environment</span></code></li>
+</ul>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ docker run -i -t tensorcomprehensions/linux-xenial-gcc5-tapir5.0-cuda9-cudnn7-py3:x86
+</pre></div>
+</div>
+<div class="section" id="tc-runtime-image-with-nvidia-docker">
+<h2>TC runtime image with nvidia-docker<a class="headerlink" href="#tc-runtime-image-with-nvidia-docker" title="Permalink to this headline">¶</a></h2>
+<p>We also provide a runtime nvidia-docker image for <code class="code docutils literal"><span class="pre">Ubuntu</span> <span class="pre">14.04</span></code>, <code class="code docutils literal"><span class="pre">gcc</span> <span class="pre">4.8</span></code>, <code class="code docutils literal"><span class="pre">CUDA</span> <span class="pre">8</span></code> and <code class="code docutils literal"><span class="pre">CUDNN</span> <span class="pre">6</span></code>.
+Using this image, you can also run gpu tests. To run the image, make sure you
+have <code class="code docutils literal"><span class="pre">nvidia-docker</span></code> installed. Then run the image using following command:</p>
+<ul class="simple">
+<li><code class="code docutils literal"><span class="pre">NVIDIA-Docker</span> <span class="pre">Ubuntu</span> <span class="pre">14.04</span> <span class="pre">conda</span> <span class="pre">environment</span></code></li>
+</ul>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ nvidia-docker run --rm -i -t tensorcomprehensions/trusty-gcc4.8-py3-conda-cuda:x86
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -300,6 +355,15 @@
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installation_conda_dep.html" class="btn btn-neutral float-right" title="Building with conda packaged dependencies in Conda Environment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral" title="Installation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
