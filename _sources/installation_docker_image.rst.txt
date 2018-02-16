@@ -23,8 +23,8 @@ The conda and non-conda images for each setup are below:
 
 Now, follow the instructions below to build TC:
 
-* **Option1:** If you want to build everything from scratch including TC dependencies, follow :ref:`conda_dep_install_tc`.
-* **Option2:** If you want to build TC but using pre-built conda packages, follow :ref:`conda_install_tc`.
+* **Option1:** If you want to build everything from scratch including TC dependencies, follow :ref:`conda_install_tc`.
+* **Option2:** If you want to build TC but using pre-built conda packages, follow :ref:`conda_dep_install_tc`.
 
 
 * :code:`Ubuntu 14.04 non-conda environment`
@@ -70,5 +70,5 @@ have :code:`nvidia-docker` installed. Then run the image using following command
 
 Now, follow the instructions below to build TC:
 
-* **Option1:** If you want to build everything from scratch including TC dependencies, follow :ref:`conda_dep_install_tc`.
-* **Option2:** If you want to build TC but using pre-built conda packages, follow :ref:`conda_install_tc`.
+* **Option1:** If you want to build everything from scratch including TC dependencies, follow :ref:`conda_install_tc`.
+* **Option2:** If you want to build TC but using pre-built conda packages, follow :ref:`conda_dep_install_tc`.
