@@ -15,7 +15,6 @@
  */
 #pragma once
 
-#include "tc/core/halide2pencil.h"
 #include "tc/core/mapping_options.h"
 #include "tc/core/polyhedral/scop.h"
 #include "tc/core/tc_executor.h"
@@ -54,7 +53,7 @@ class CudaTcExecutor : public ::tc::TcExecutor {
   // This is because for the time being we fully specialize all the sizes and
   // strides at runtime.
   // @{
-  void compile(const std::string& options) override {
+  virtual void compile(const std::string& options) override {
     compile(MappingOptions(options));
   }
   void compile(const tc::MappingOptions& options);
@@ -86,7 +85,7 @@ class CudaTcExecutor : public ::tc::TcExecutor {
     return execInfo_.cudaSource;
   }
 
-  bool hasRTCFun() {
+  virtual bool hasRTCFun() const override {
     return execInfo_.rtcFun.get() != nullptr;
   }
 

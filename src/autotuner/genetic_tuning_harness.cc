@@ -228,12 +228,13 @@ bool GeneticTunerHarness::warmupOrPrune(
   auto debugTuner = FLAGS_debug_tuner;
   auto minThreads = FLAGS_tuner_min_launch_total_threads;
   auto threadPruningFunction =
-      std::function<bool(const CudaExecutionEngine::ExecutorInfo*)>(
+      std::function<bool(const ExecutionEngine::ExecutorInfo*)>(
           [debugTuner,
-           minThreads](const CudaExecutionEngine::ExecutorInfo* info) {
+           minThreads](const ExecutionEngine::ExecutorInfo* info) {
             CHECK(info);
             USING_MAPPING_SHORT_NAMES(BX, BY, BZ, TX, TY, TZ);
-            auto& exec = info->exec;
+            auto& exec = static_cast<const CudaExecutionEngine::ExecutorInfo*>(
+                info)->exec;
             auto block = static_cast<CudaTcExecutor&>(*exec).block();
             auto nThreads = TX.mappingSize(block) * TY.mappingSize(block) *
                 TZ.mappingSize(block);
@@ -245,7 +246,7 @@ bool GeneticTunerHarness::warmupOrPrune(
                 std::stringstream ssInfo;
                 ssInfo << "Skip configuration with too few threads: " << block
                        << "\n"
-                       << MappingOptionsAsCpp(MappingOptions(info->options));
+                       << MappingOptionsAsCpp(MappingOptions(info->mappingOptions));
                 LOG_LINE_BY_LINE(INFO, ssInfo);
               }
               return true;

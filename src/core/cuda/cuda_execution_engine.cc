@@ -30,8 +30,8 @@ Duration CudaExecutionEngine::run(
     const std::vector<const DLTensor*>& inputs,
     const std::vector<DLTensor*>& outputs,
     bool profile,
-    std::function<bool(const ExecutorInfo*)> pruningFunction) {
-  std::unique_ptr<ExecutorInfo> p(nullptr);
+    std::function<bool(const ExecutionEngine::ExecutorInfo*)> pruningFunction) {
+  std::unique_ptr<ExecutionEngine::ExecutorInfo> p(nullptr);
   {
     std::lock_guard<std::mutex> lg(executorInfoMutex);
     std::swap(p, executors_[handle]);
@@ -46,10 +46,10 @@ Duration CudaExecutionEngine::run(
     if (pruningFunction(p.get())) {
       return Duration::max();
     }
-    CHECK(p->exec.hasRTCFun());
+    CHECK(p->exec->hasRTCFun());
     try {
       // Must catch and swap to avoid exception in destructor!
-      res = p->exec.run(inputs, outputs, profile);
+      res = p->exec->run(inputs, outputs, profile);
     } catch (std::exception& e) {
       std::lock_guard<std::mutex> lg(executorInfoMutex);
       std::swap(p, executors_[handle]);
@@ -69,7 +69,7 @@ void CudaExecutionEngine::uncheckedRun(
     size_t handle,
     const std::vector<const void*>& inputs,
     const std::vector<void*>& outputs) {
-  std::unique_ptr<ExecutorInfo> p(nullptr);
+  std::unique_ptr<ExecutionEngine::ExecutorInfo> p(nullptr);
   {
     std::lock_guard<std::mutex> lg(executorInfoMutex);
     std::swap(p, executors_[handle]);
@@ -80,10 +80,10 @@ void CudaExecutionEngine::uncheckedRun(
   // compilation options. In that case, we swapped 2 nullptrs and we just
   // exit.
   if (p.get()) {
-    CHECK(p->exec.hasRTCFun());
+    CHECK(p->exec->hasRTCFun());
     try {
       // Must catch and swap to avoid exception in destructor!
-      p->exec.uncheckedRun(inputs, outputs);
+      p->exec->uncheckedRun(inputs, outputs);
     } catch (std::exception& e) {
       std::lock_guard<std::mutex> lg(executorInfoMutex);
       std::swap(p, executors_[handle]);
@@ -112,13 +112,14 @@ size_t CudaExecutionEngine::getHandle(
   auto ei = std::find_if(
       executors_.begin(),
       executors_.end(),
-      [&](const std::unique_ptr<ExecutorInfo>& ei) {
+      [&](const std::unique_ptr<ExecutionEngine::ExecutorInfo>& ei) {
         return ei && // UPtrs get stolen by run to avoid underlying vector
                      // realloc issues, guard against that
             name == ei->identifier &&
             compareDLTensorVectorMetadata(
                    extractRawPtrs(ei->inputsInfo), inputsInfo) &&
-            ei->options && *ei->options == options;
+            ei->mappingOptions.size() > 0 && // not a ptr anymore but a string
+            MappingOptions(ei->mappingOptions) == options;
       });
   if (ei != executors_.end()) {
     return (*ei)->objectLocalHandle;
@@ -133,12 +134,12 @@ CudaExecutionEngine::makeExecutorInfo(
     const MappingOptions& options) {
   CHECK_EQ(tcNameMap_.count(name), 1)
       << "TC function " << name << " not defined";
-  return tc::make_unique<ExecutorInfo>(
+  return std::unique_ptr<ExecutorInfo>(new ExecutorInfo(
       name,
       inputsInfo,
       std::unique_ptr<MappingOptions>(new MappingOptions(options)),
       tcNameMap_.at(name),
-      CudaTcExecutor::InvalidHandle);
+      CudaTcExecutor::InvalidHandle));
 }
 
 size_t CudaExecutionEngine::compile(
@@ -154,8 +155,8 @@ size_t CudaExecutionEngine::compile(
 
   // Otherwise we need to compile.
   auto p = makeExecutorInfo(name, inputs, options);
-  p->exec.compile(options);
-  CHECK(p->exec.hasRTCFun());
+  p->exec->compile(options.toProtobufSerializedString());
+  CHECK(p->exec->hasRTCFun());
 
   handle = emplaceExecutor(std::move(p));
   return handle;

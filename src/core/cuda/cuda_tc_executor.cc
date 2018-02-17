@@ -33,19 +33,19 @@ namespace tc {
 using namespace dlutils;
 
 CudaTcExecutor::CudaTcExecutor(
-    const std::string& TcDefinition,
+    const std::string& tcDefinition,
     const std::vector<const DLTensor*>& inputsInfo)
-    : CudaTcExecutor(parseOneFunction(TcDefinition), inputsInfo) {}
+    : TcExecutor(tcDefinition, inputsInfo) {}
 
 CudaTcExecutor::CudaTcExecutor(
-    lang::TreeRef TcDefinition,
-    const std::vector<const DLTensor*>& inputsInfo)
-    : tcTree_(TcDefinition), ctx_(isl_ctx_alloc()) {
-  execInfo_.kernelName = lang::Def(tcTree_).name().name();
-  halideComponents_ = tc2halide::translate(ctx_, tcTree_);
-  checkInputsCompliant(inputsInfo);
-  execInfo_.inputsInfo = makeDLTensorVector(inputsInfo);
-  execInfo_.outputsInfo = getHalidePencilState(inputsInfo).outputsDLT;
+    lang::TreeRef tcDefinition,
+    const std::vector<const DLTensor*>& inputsInfo) :
+      TcExecutor(tcDefinition, inputsInfo) {
+  // execInfo_.kernelName = lang::Def(tcTree_).name().name();
+  // halideComponents_ = tc2halide::translate(ctx_, tcTree_);
+  // checkInputsCompliant(inputsInfo);
+  // execInfo_.inputsInfo = makeDLTensorVector(inputsInfo);
+  // execInfo_.outputsInfo = getHalidePencilState(inputsInfo).outputsDLT;
 }
 
 CudaTcExecutor::~CudaTcExecutor() {
