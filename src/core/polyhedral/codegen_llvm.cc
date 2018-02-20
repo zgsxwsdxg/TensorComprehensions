@@ -355,21 +355,6 @@ class CodeGen_TC : public Halide::Internal::CodeGen_X86 {
   }
 };
 
-template <typename CI, typename CO, typename Pred>
-bool all(const CI& inputs, const CO& outputs, Pred p) {
-  for (const auto& v : inputs) {
-    if (not p(v)) {
-      return false;
-    }
-  }
-  for (const auto& v : outputs) {
-    if (not p(v)) {
-      return false;
-    }
-  }
-  return true;
-}
-
 class LLVMCodegen {
   llvm::Type* convertTensorToType(const Halide::OutputImageParam& t) {
     auto sizes =
@@ -473,9 +458,13 @@ class LLVMCodegen {
       const std::string& fname) {
     CHECK(not inputs.empty());
     CHECK(not outputs.empty());
-    if (not all(inputs, outputs, [&inputs](const Halide::OutputImageParam& p) {
-          return p.type() == inputs.front().type();
-        })) {
+
+    auto pred = [&inputs](const Halide::OutputImageParam& p) {
+      return p.type() == inputs.front().type();
+    };
+
+    if (not std::all_of(inputs.begin(), inputs.end(), pred) or
+        not std::all_of(outputs.begin(), outputs.end(), pred)) {
       throw std::invalid_argument("All arguments must be of the same type.");
     }
 
