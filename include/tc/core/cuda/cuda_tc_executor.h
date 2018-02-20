@@ -26,11 +26,6 @@
 
 namespace tc {
 
-using PpcgppCompilationCommand = std::function<std::string(
-    std::unique_ptr<tc::polyhedral::Scop>&& scop,
-    const std::vector<const DLTensor*>& inputs,
-    const MappingOptions& options)>;
-
 class CudaTcExecutor : public ::tc::TcExecutor {
  public:
   CudaTcExecutor(
@@ -102,7 +97,6 @@ class CudaTcExecutor : public ::tc::TcExecutor {
   }
 
  private:
-  void compileWithPetPpcg();
   void compileWithTcMapper();
 
  public:
