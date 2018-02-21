@@ -185,7 +185,7 @@ isl::map extractAccess(
 
 std::pair<isl::union_map, isl::union_map>
 extractAccesses(isl::set domain, const Stmt& s, AccessMap* accesses) {
-  class FindAccesses : public IRVisitor {
+  class FindAccesses : public IRGraphVisitor {
     using IRVisitor::visit;
 
     void visit(const Call* op) override {
