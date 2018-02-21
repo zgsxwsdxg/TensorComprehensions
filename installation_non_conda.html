@@ -38,7 +38,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Tensor Comprehensions v0.1.0 documentation" href="index.html"/>
-        <link rel="next" title="Tech Report" href="report.html"/>
+        <link rel="next" title="Using Tensor Comprehensions with Caffe2" href="installation_caffe2_integration.html"/>
         <link rel="prev" title="Building from Source in Conda Environment" href="installation_conda.html"/> 
 
   
@@ -128,6 +128,7 @@
 <li class="toctree-l3"><a class="reference internal" href="inference.html#strided-indexing-with-constant-stride">Strided indexing with constant stride</a></li>
 <li class="toctree-l3"><a class="reference internal" href="inference.html#strided-indexing-with-offsets">Strided indexing with offsets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="inference.html#strided-indexing-with-dynamic-stride">Strided indexing with dynamic stride</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inference.html#constant-fill-using-an-exists-clause">Constant fill using an exists clause</a></li>
 </ul>
 </li>
 </ul>
@@ -181,11 +182,11 @@
 <li class="toctree-l1"><a class="reference internal" href="installation_conda_dep.html">Building with conda packaged dependencies in Conda Environment</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-1-install-system-dependencies">Step 1: Install system dependencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-2-setup-gcc-g">Step 2: Setup gcc / g++</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-3-get-protobuf3-4">Step 3: Get Protobuf3.4</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-4-install-anaconda3">Step 4: Install Anaconda3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-5-get-cuda-and-cudnn">Step 5: Get CUDA and CUDNN</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-6-install-tc">Step 6: Install TC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-7-verify-tc-installation">Step 7: Verify TC installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-3-install-anaconda3">Step 3: Install Anaconda3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-4-get-cuda-and-cudnn">Step 4: Get CUDA and CUDNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-5-install-tc">Step 5: Install TC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-6-verify-tc-installation">Step 6: Verify TC installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#build-with-basic-caffe2-integration">Build with Basic Caffe2 Integration</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation_conda.html">Building from Source in Conda Environment</a><ul>
@@ -210,6 +211,15 @@
 <li class="toctree-l2"><a class="reference internal" href="#step-7-install-tc">Step 7: Install TC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-8-verify-tc-installation">Step 8: Verify TC installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#build-with-basic-caffe2-integration">Build with Basic Caffe2 Integration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation_caffe2_integration.html">Using Tensor Comprehensions with Caffe2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation_caffe2_integration.html#step-1-install-system-dependencies">Step 1: Install system dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_caffe2_integration.html#step-2-setup-gcc-g">Step 2: Setup gcc / g++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_caffe2_integration.html#step-3-install-anaconda3">Step 3: Install Anaconda3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_caffe2_integration.html#step-4-get-cuda-and-cudnn">Step 4: Get CUDA and CUDNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_caffe2_integration.html#step-5-install-tc-with-caffe2">Step 5: Install TC with Caffe2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_caffe2_integration.html#step-6-run-tc-caffe2-python-test">Step 6: Run TC Caffe2 Python test</a></li>
 </ul>
 </li>
 </ul>
@@ -298,12 +308,12 @@ on <code class="code docutils literal"><span class="pre">Ubuntu</span> <span cla
 <div class="section" id="step-1-install-some-build-dependencies">
 <h2>Step 1: Install some build dependencies<a class="headerlink" href="#step-1-install-some-build-dependencies" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ apt-get update
-$ apt-get install -y libgoogle-glog-dev curl build-essential cmake git automake libgmp3-dev libtool ssh libyaml-dev realpath wget valgrind software-properties-common unzip
+$ apt-get install -y libgoogle-glog-dev curl build-essential cmake git automake libgmp3-dev libtool ssh libyaml-dev realpath wget valgrind software-properties-common unzip libz-dev
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">You might additionally need to install <code class="code docutils literal"><span class="pre">cmake3</span></code> and <code class="code docutils literal"><span class="pre">libz-dev</span></code>, if these packages are not found by apt-get, you can proceed otherwise install them by running <code class="code docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libz-dev</span></code></p>
+<p class="last">You might additionally need to install <code class="code docutils literal"><span class="pre">cmake3</span></code>, if this package is not found by apt-get, you can proceed.</p>
 </div>
 </div>
 <div class="section" id="step-2-setup-gcc-g">
@@ -345,7 +355,7 @@ $ mkdir -p <span class="nv">$LLVM_SOURCES</span> <span class="o">&amp;&amp;</spa
 <p>Now, clone the repo, build and install LLVM+Tapir:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ git clone --recursive https://github.com/wsmoses/Tapir-LLVM llvm
 $ mkdir -p <span class="si">${</span><span class="nv">LLVM_SOURCES</span><span class="si">}</span>/llvm_build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> <span class="si">${</span><span class="nv">LLVM_SOURCES</span><span class="si">}</span>/llvm_build
-$ <span class="si">${</span><span class="nv">CMAKE_VERSION</span><span class="si">}</span> -DCMAKE_INSTALL_PREFIX<span class="o">=</span><span class="si">${</span><span class="nv">CLANG_PREFIX</span><span class="si">}</span> -DLLVM_TARGETS_TO_BUILD<span class="o">=</span>X86 -DCOMPILER_RT_BUILD_CILKTOOLS<span class="o">=</span>OFF -DLLVM_ENABLE_CXX1Y<span class="o">=</span>ON -DLLVM_ENABLE_TERMINFO<span class="o">=</span>OFF -DLLVM_BUILD_TESTS<span class="o">=</span>OFF -DLLVM_ENABLE_ASSERTIONS<span class="o">=</span>ON -DCMAKE_BUILD_TYPE<span class="o">=</span>Release -DLLVM_BUILD_LLVM_DYLIB<span class="o">=</span>ON  -DLLVM_ENABLE_RTTI<span class="o">=</span>ON ../llvm/
+$ <span class="si">${</span><span class="nv">CMAKE_VERSION</span><span class="si">}</span> -DLLVM_ENABLE_OCAMLDOC<span class="o">=</span>OFF -DLLVM_INSTALL_OCAMLDOC_HTML_DIR<span class="o">=</span>/tmp -DLLVM_OCAML_INSTALL_PATH<span class="o">=</span>/tmp -DCMAKE_INSTALL_PREFIX<span class="o">=</span><span class="si">${</span><span class="nv">CLANG_PREFIX</span><span class="si">}</span> -DLLVM_TARGETS_TO_BUILD<span class="o">=</span>X86 -DCOMPILER_RT_BUILD_CILKTOOLS<span class="o">=</span>OFF -DLLVM_ENABLE_CXX1Y<span class="o">=</span>ON -DLLVM_ENABLE_TERMINFO<span class="o">=</span>OFF -DLLVM_BUILD_TESTS<span class="o">=</span>OFF -DLLVM_ENABLE_ASSERTIONS<span class="o">=</span>ON -DCMAKE_BUILD_TYPE<span class="o">=</span>Release -DLLVM_BUILD_LLVM_DYLIB<span class="o">=</span>ON  -DLLVM_ENABLE_RTTI<span class="o">=</span>ON ../llvm/
 $ make -j <span class="nv">$CORES</span> -s <span class="o">&amp;&amp;</span> make install -j <span class="nv">$CORES</span> -s
 $ <span class="nb">cd</span> <span class="nv">$HOME</span> <span class="o">&amp;&amp;</span> rm -rf <span class="nv">$LLVM_SOURCES</span>
 </pre></div>
@@ -368,10 +378,15 @@ $ apt-get -y install cuda
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nv">CUDNN_TAR_FILE</span><span class="o">=</span><span class="s2">&quot;cudnn-8.0-linux-x64-v6.0.tgz&quot;</span>
 $ wget http://developer.download.nvidia.com/compute/redist/cudnn/v6.0/<span class="si">${</span><span class="nv">CUDNN_TAR_FILE</span><span class="si">}</span>
 $ tar -xzvf <span class="si">${</span><span class="nv">CUDNN_TAR_FILE</span><span class="si">}</span>
-$ sudo cp -P cuda/include/cudnn.h /usr/local/cuda/include
-$ sudo cp -P cuda/lib64/libcudnn* /usr/local/cuda/lib64/
-$ sudo chmod a+r /usr/local/cuda/lib64/libcudnn*
+$ cp -P cuda/include/cudnn.h /usr/local/cuda/include
+$ cp -P cuda/lib64/libcudnn* /usr/local/cuda/lib64/
+$ chmod a+r /usr/local/cuda/lib64/libcudnn*
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please use <code class="code docutils literal"><span class="pre">sudo</span></code> to run the command that might fail with permission issues. Otherwise, run
+the commands as is.</p>
 </div>
 <p>Set environment variables:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">export</span> <span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span>/usr/local/cuda/lib64:/usr/local/cuda/targets/x86_64-linux/lib/stubs/:<span class="nv">$LD_LIBRARY_PATH</span>
@@ -385,8 +400,13 @@ $ <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</
 to install the protobuf.</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ mkdir -p /tmp/proto-install <span class="o">&amp;&amp;</span> <span class="nb">cd</span> /tmp/proto-install
 $ wget --quiet https://github.com/google/protobuf/archive/v3.4.0.zip -O proto.zip <span class="o">&amp;&amp;</span> unzip -qq proto.zip -d .
-$ <span class="nb">cd</span> protobuf-3.4.0 <span class="o">&amp;&amp;</span> ./autogen.sh <span class="o">&amp;&amp;</span> ./configure <span class="o">&amp;&amp;</span> make -j <span class="m">8</span> <span class="o">&amp;&amp;</span> sudo make install <span class="o">&amp;&amp;</span> sudo ldconfig
+$ <span class="nb">cd</span> protobuf-3.4.0 <span class="o">&amp;&amp;</span> ./autogen.sh <span class="o">&amp;&amp;</span> ./configure <span class="o">&amp;&amp;</span> make -j <span class="m">8</span> <span class="o">&amp;&amp;</span> make install <span class="o">&amp;&amp;</span> ldconfig
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please use <code class="code docutils literal"><span class="pre">sudo</span></code> to run the command that might fail with permission issues. Otherwise, run
+the commands as is.</p>
 </div>
 <p>Now check your proto version by running:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ protoc --version
@@ -398,7 +418,7 @@ $ <span class="nb">cd</span> protobuf-3.4.0 <span class="o">&amp;&amp;</span> ./
 <p>TC officially has support for Python3. Python2 should also work fine but it is
 not something we will support. Follow these instructions below to get Python specific
 dependencies and updating your Python:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ sudo apt-get install -y python3-dev python3-pip python3-setuptools
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ apt-get install -y python3-dev python3-pip python3-setuptools
 $ pip3 install --upgrade pip
 $ pip3 install numpy pyyaml
 </pre></div>
@@ -469,7 +489,7 @@ $ ./test_cpu.sh               <span class="c1"># if you have only CPU</span>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="report.html" class="btn btn-neutral float-right" title="Tech Report" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="installation_caffe2_integration.html" class="btn btn-neutral float-right" title="Using Tensor Comprehensions with Caffe2" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="installation_conda.html" class="btn btn-neutral" title="Building from Source in Conda Environment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

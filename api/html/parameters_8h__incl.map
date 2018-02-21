@@ -1,0 +1,15 @@
+<map id="include/tc/autotuner/parameters.h" name="include/tc/autotuner/parameters.h">
+<area shape="rect" id="node5" href="$mapping__options_8h.html" title="tc/core/mapping_options.h" alt="" coords="487,96,661,123"/>
+<area shape="rect" id="node35" href="$memory_8h.html" title="tc/core/utils/memory.h" alt="" coords="1676,96,1828,123"/>
+<area shape="rect" id="node10" href="$isl_8h.html" title="tc/external/isl.h" alt="" coords="566,179,676,205"/>
+<area shape="rect" id="node23" href="$flags_8h.html" title="tc/core/flags.h" alt="" coords="836,179,941,205"/>
+<area shape="rect" id="node25" href="$rtc_8h.html" title="tc/core/rtc.h" alt="" coords="1124,179,1216,205"/>
+<area shape="rect" id="node33" href="$mapping__options-inl_8h.html" title="tc/core/mapping_options\l&#45;inl.h" alt="" coords="27,171,190,213"/>
+<area shape="rect" id="node12" href="$isl__mu__wrappers_8h.html" title="tc/external/detail\l/isl_mu_wrappers.h" alt="" coords="330,262,464,303"/>
+<area shape="rect" id="node13" href="$islpp_8h.html" title="tc/external/detail\l/islpp.h" alt="" coords="591,262,709,303"/>
+<area shape="rect" id="node18" href="$islpp__wrap_8h.html" title="tc/core/islpp_wrap.h" alt="" coords="454,360,593,387"/>
+<area shape="rect" id="node22" href="$islpp-inl_8h.html" title="tc/external/detail\l/islpp&#45;inl.h" alt="" coords="810,353,928,394"/>
+<area shape="rect" id="node19" href="$function__traits_8h.html" title="tc/core/utils/function\l_traits.h" alt="" coords="394,443,533,485"/>
+<area shape="rect" id="node28" href="$cuda_8h.html" title="cuda.h" alt="" coords="1414,269,1476,296"/>
+<area shape="rect" id="node34" href="$vararg_8h.html" title="tc/core/utils/vararg.h" alt="" coords="38,269,180,296"/>
+</map>

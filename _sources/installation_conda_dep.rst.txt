@@ -13,7 +13,7 @@ Step 1: Install system dependencies
 .. code-block:: bash
 
     $ apt-get update
-    $ apt-get install -y wget cmake git build-essential unzip curl automake build-essential realpath libtool
+    $ apt-get install -y wget cmake git build-essential unzip curl automake build-essential realpath libtool software-properties-common
 
 .. note::
 
@@ -38,7 +38,7 @@ If you don't have correct gcc, g++, follow the instructions below, otherwise ski
 
     $ add-apt-repository ppa:ubuntu-toolchain-r/test
     $ apt-get update
-    $ apt-get install -y --no-install-recommends gcc-4.8 g++-4.8
+    $ apt-get install -y --no-install-recommends libcilkrts5 gcc-4.8 g++-4.8
 
 *Optionally*, you can configure the gcc versions available on your machine and set up higher priority for the version you want.
 
@@ -47,31 +47,8 @@ If you don't have correct gcc, g++, follow the instructions below, otherwise ski
     $ update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50
     $ update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
 
-Step 3: Get Protobuf3.4
-^^^^^^^^^^^^^^^^^^^^^^^
 
-TC officially support protobuf3.4 at the moment. Please follow the below instructions
-to install the protobuf.
-
-.. note::
-
-    Anaconda3 also has a protobuf3 available but that might not be compatible with TC. So we recommend following the below instructions to install Protobuf3.4
-
-.. code-block:: bash
-
-    $ export CC=$(which gcc)
-    $ export CXX=$(which g++)
-    $ mkdir -p /tmp/proto-install && cd /tmp/proto-install
-    $ wget --quiet https://github.com/google/protobuf/archive/v3.4.0.zip -O proto.zip && unzip -qq proto.zip -d .
-    $ cd protobuf-3.4.0 && ./autogen.sh && ./configure && make -j 8 && make install && ldconfig
-
-Now check your proto version by running:
-
-.. code-block:: bash
-
-    $ protoc --version
-
-Step 4: Install Anaconda3
+Step 3: Install Anaconda3
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 In order to contribute to TC python/C++ API, you need to install TC from source. For this,
 :code:`anaconda3` is required. Install :code:`anaconda3` by following the instructions below:
@@ -97,7 +74,7 @@ Now, verify your conda installation and check the version:
 
 This command should print the path of your conda bin. If it doesn't, make sure conda is in your :code:`PATH`.
 
-Step 5: Get CUDA and CUDNN
+Step 4: Get CUDA and CUDNN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 In order to build TC, you also need to have :code:`CUDA` and :code:`CUDNN`. If you already have it
 you can just export the :code:`PATH`, :code:`LD_LIBRARY_PATH` (see the end of this step). If you don't have CUDA/CUDNN, then follow the instructions below:
@@ -124,6 +101,11 @@ Now, Install cuDNN v6.0 (skip if you have it already):
     $ cp -P cuda/lib64/libcudnn* /usr/local/cuda/lib64/
     $ chmod a+r /usr/local/cuda/lib64/libcudnn*
 
+.. note::
+
+    Please use :code:`sudo` to run the command that might fail with permission issues. Otherwise, run
+    the commands as is.
+
 Set environment variables:
 
 .. code-block:: bash
@@ -133,7 +115,7 @@ Set environment variables:
 
 .. _conda_dep_install_tc:
 
-Step 6: Install TC
+Step 5: Install TC
 ^^^^^^^^^^^^^^^^^^
 
 We ship conda packages for most of TC dependencies like :code:`clang+llvm`, :code:`glog`,
@@ -142,19 +124,18 @@ conda packages of TC dependencies and then build TC.
 
 .. code-block:: bash
 
-    $ conda create -y --name tc-build-conda python=3.6
-    $ source activate tc-build-conda
-    $ conda install -y -c prigoyal tapir50 llvm isl-tc gflags glog
+    $ conda create -y --name tc-build-conda python=3.6 && source activate tc-build-conda
+    $ conda install -y -c prigoyal llvm-tapir50 isl-tc gflags glog protobuf
     $ conda install -y -c pytorch pytorch
     $ cd $HOME && git clone https://github.com/facebookresearch/TensorComprehensions.git --recursive
-    $ cd TensorComprehensions
-    $ git submodule update --init --recursive
+    $ cd TensorComprehensions && git submodule update --init --recursive
     $ BUILD_TYPE=Release INSTALL_PREFIX=$CONDA_PREFIX WITH_CAFFE2=OFF CLANG_PREFIX=$(llvm-config --prefix) ./build.sh --all
 
 .. note::
-    Please also make sure that you don't have gflags or glog in your system path. Those might conflict with the TC gflags/glog.
+    Please also make sure that you don't have :code:`gflags` or :code:`glog` in your system path. Those might conflict with the TC gflags/glog.
 
-Step 7: Verify TC installation
+
+Step 6: Verify TC installation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
@@ -162,3 +143,16 @@ Step 7: Verify TC installation
     $ cd $HOME/TensorComprehensions
     $ ./test.sh                   # if you have GPU
     $ ./test_cpu.sh               # if you have only CPU
+
+
+Build with Basic Caffe2 Integration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you want to install TC with Caffe2 as well, run the following:
+
+.. code-block:: bash
+
+    $ conda install -y -c prigoyal caffe2
+    $ BUILD_TYPE=Release INSTALL_PREFIX=$CONDA_PREFIX CLANG_PREFIX=$(llvm-config --prefix) ./build.sh --all
+
+Now, you have the TC bindings with Caffe2 built as well and and you write python examples for TC in caffe2.

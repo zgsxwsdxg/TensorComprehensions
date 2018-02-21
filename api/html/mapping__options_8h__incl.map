@@ -1,0 +1,13 @@
+<map id="include/tc/core/mapping_options.h" name="include/tc/core/mapping_options.h">
+<area shape="rect" id="node7" href="$isl_8h.html" title="tc/external/isl.h" alt="" coords="513,104,623,131"/>
+<area shape="rect" id="node21" href="$flags_8h.html" title="tc/core/flags.h" alt="" coords="763,104,868,131"/>
+<area shape="rect" id="node23" href="$rtc_8h.html" title="tc/core/rtc.h" alt="" coords="1190,104,1281,131"/>
+<area shape="rect" id="node32" href="$mapping__options-inl_8h.html" title="tc/core/mapping_options\l&#45;inl.h" alt="" coords="1585,97,1748,138"/>
+<area shape="rect" id="node9" href="$isl__mu__wrappers_8h.html" title="tc/external/detail\l/isl_mu_wrappers.h" alt="" coords="553,187,687,229"/>
+<area shape="rect" id="node10" href="$islpp_8h.html" title="tc/external/detail\l/islpp.h" alt="" coords="358,187,476,229"/>
+<area shape="rect" id="node15" href="$islpp__wrap_8h.html" title="tc/core/islpp_wrap.h" alt="" coords="348,285,487,312"/>
+<area shape="rect" id="node20" href="$islpp-inl_8h.html" title="tc/external/detail\l/islpp&#45;inl.h" alt="" coords="102,278,220,319"/>
+<area shape="rect" id="node16" href="$function__traits_8h.html" title="tc/core/utils/function\l_traits.h" alt="" coords="455,369,595,410"/>
+<area shape="rect" id="node27" href="$cuda_8h.html" title="cuda.h" alt="" coords="1536,195,1597,221"/>
+<area shape="rect" id="node33" href="$vararg_8h.html" title="tc/core/utils/vararg.h" alt="" coords="1645,195,1787,221"/>
+</map>

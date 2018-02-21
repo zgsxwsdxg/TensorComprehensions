@@ -95,21 +95,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">Paper</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="report.html">Tech Report</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Support</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="contacts.html">Contacts</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#bugs-and-features">Bugs and features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#mailing-list">Mailing list</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#contributions">Contributions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contacts.html#slack-channel">Slack channel</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption"><span class="caption-text">Index</span></p>
+              <p class="caption"><span class="caption-text">Index</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">What is Tensor Comprehensions?</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#tensor-comprehension-notation">Tensor Comprehension Notation</a></li>
@@ -127,7 +113,7 @@
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#types">Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#data-layout">Data Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#variable-scoping">Variable Scoping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semantics.html#implied-reductions">Implied Reductions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="semantics.html#implied-reductions-and-operators">Implied Reductions and operators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#size-expressions">Size Expressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#statements">Statements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semantics.html#expressions">Expressions</a></li>
@@ -142,6 +128,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#strided-indexing-with-constant-stride">Strided indexing with constant stride</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#strided-indexing-with-offsets">Strided indexing with offsets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#strided-indexing-with-dynamic-stride">Strided indexing with dynamic stride</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constant-fill-using-an-exists-clause">Constant fill using an exists clause</a></li>
 </ul>
 </li>
 </ul>
@@ -188,18 +175,18 @@
 <p class="caption"><span class="caption-text">Installation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docker_image.html">Installing TC from docker image</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="docker_image.html#tc-runtime-image-with-nvidia-docker">TC runtime image with nvidia-docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation_docker_image.html">Installing TC from Docker image</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation_docker_image.html#tc-runtime-image-with-nvidia-docker">TC runtime image with nvidia-docker</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation_conda_dep.html">Building with conda packaged dependencies in Conda Environment</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-1-install-system-dependencies">Step 1: Install system dependencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-2-setup-gcc-g">Step 2: Setup gcc / g++</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-3-get-protobuf3-4">Step 3: Get Protobuf3.4</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-4-install-anaconda3">Step 4: Install Anaconda3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-5-get-cuda-and-cudnn">Step 5: Get CUDA and CUDNN</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-6-install-tc">Step 6: Install TC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-7-verify-tc-installation">Step 7: Verify TC installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-3-install-anaconda3">Step 3: Install Anaconda3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-4-get-cuda-and-cudnn">Step 4: Get CUDA and CUDNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-5-install-tc">Step 5: Install TC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#step-6-verify-tc-installation">Step 6: Verify TC installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_conda_dep.html#build-with-basic-caffe2-integration">Build with Basic Caffe2 Integration</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation_conda.html">Building from Source in Conda Environment</a><ul>
@@ -224,6 +211,29 @@
 <li class="toctree-l2"><a class="reference internal" href="installation_non_conda.html#step-7-install-tc">Step 7: Install TC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation_non_conda.html#step-8-verify-tc-installation">Step 8: Verify TC installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation_non_conda.html#build-with-basic-caffe2-integration">Build with Basic Caffe2 Integration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation_caffe2_integration.html">Using Tensor Comprehensions with Caffe2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation_caffe2_integration.html#step-1-install-system-dependencies">Step 1: Install system dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_caffe2_integration.html#step-2-setup-gcc-g">Step 2: Setup gcc / g++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_caffe2_integration.html#step-3-install-anaconda3">Step 3: Install Anaconda3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_caffe2_integration.html#step-4-get-cuda-and-cudnn">Step 4: Get CUDA and CUDNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_caffe2_integration.html#step-5-install-tc-with-caffe2">Step 5: Install TC with Caffe2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_caffe2_integration.html#step-6-run-tc-caffe2-python-test">Step 6: Run TC Caffe2 Python test</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Paper</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="report.html">Tech Report</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contacts.html">Contacts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#bugs-and-features">Bugs and features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#mailing-list">Mailing list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#contributions">Contributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts.html#slack-channel">Slack channel</a></li>
 </ul>
 </li>
 </ul>
@@ -505,6 +515,21 @@ unrolled case, and so we get the same result:</p>
 <p>The value of <code class="code docutils literal"><span class="pre">S(0)</span></code> is not fixed until runtime, so we can&#8217;t resolve the
 size of <code class="code docutils literal"><span class="pre">A</span></code> or the range of the loop. This case throws a compile-time
 error. A <code class="code docutils literal"><span class="pre">where</span></code> clause that defines the range of <code class="code docutils literal"><span class="pre">i</span></code> is required.</p>
+</div>
+<div class="section" id="constant-fill-using-an-exists-clause">
+<h3>Constant fill using an exists clause<a class="headerlink" href="#constant-fill-using-an-exists-clause" title="Permalink to this headline">¶</a></h3>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">constant_fill</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="n">A</span><span class="p">,</span> <span class="nb">float</span> <span class="n">c</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">B</span> <span class="p">{</span>
+  <span class="n">B</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">c</span> <span class="n">where</span> <span class="n">exists</span> <span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>An <code class="code docutils literal"><span class="pre">exists</span></code> clause allows you to add additional expressions to the range
+inference process without having the expressions affect the actual computation.
+In this example, it allows you to say that <code class="code docutils literal"><span class="pre">B(i)</span></code> should have the same size as
+<code class="code docutils literal"><span class="pre">A(i)</span></code>, but be filled with a constant value <code class="code docutils literal"><span class="pre">c</span></code>.  That is, you should infer the
+range of <code class="code docutils literal"><span class="pre">B(i)</span></code> to exist at all the places where <code class="code docutils literal"><span class="pre">A(i)</span></code> exists.
+It is equivalent to writing the expression <code class="code docutils literal"><span class="pre">true</span> <span class="pre">?</span> <span class="pre">c</span> <span class="pre">:</span> <span class="pre">A(i)</span></code>, but with
+clearer intentions.</p>
 </div>
 </div>
 </div>
